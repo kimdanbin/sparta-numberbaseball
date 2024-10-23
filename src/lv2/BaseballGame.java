@@ -10,46 +10,38 @@ public class BaseballGame {
 
     // 1) 정답 숫자 생성하기
     public BaseballGame() {
-        // hashSet으로 중복 없이 정답 받기
-        HashSet<Integer> randomNums = new HashSet<>();
-        // random으로 숫자 뽑기
-        Random rand = new Random();
-        rand.setSeed(System.currentTimeMillis());
-
-        // 숫자 3개 받을 때까지 반복
-        while (randomNums.size() != 3) {
-            randomNums.add(rand.nextInt(9) + 1);
-        }
-
-        // set에서 arraylist로 변경
-        answer = new ArrayList<>(randomNums);
-
-        // shuffle함수로 숫자 순서 바꾸기
-        Collections.shuffle(answer);
-        System.out.println(answer.toString());
+        // 랜덤으로 정답 생성
+        randomAnswer();
     }
 
     // 출력 개선 (lv2)
     public void startGame() {
         Scanner sc = new Scanner(System.in);
-        BaseballGameDisplay.displayStart();
-        int select = sc.nextInt();
-        switch (select) {
-            case 1:
-                BaseballGameDisplay.displayGameStart();
-                play();
-                break;
-            case 2:
-                System.out.println("2. 게임 기록 보기”는 Lv3에서 제시됩니다.");
-                break;
-            case 3:
-            default:
-                break;
+        boolean isContinue = true;
+        while (isContinue) {
+            BaseballGameDisplay.displayStart();
+            int select = sc.nextInt();
+            switch (select) {
+                case 1:
+                    BaseballGameDisplay.displayGameStart();
+                    play();
+                    break;
+                case 2:
+                    System.out.println("2. 게임 기록 보기”는 Lv3에서 제시됩니다.\n");
+                    break;
+                case 3:
+                    isContinue = false;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
     // 게임 시작 메서드
     public int play() {
+        // 플레이마다 정답이 랜덤으로 변경됨
+        randomAnswer();
 
         // 4) 정답을 맞출 때까지 게임 이어서 하기
         while (true) {
@@ -134,5 +126,26 @@ public class BaseballGame {
             }
         }
         return ball;
+    }
+
+    // 랜덤으로 정답을 만드는 메서드
+    private void randomAnswer() {
+        // hashSet으로 중복 없이 정답 받기
+        HashSet<Integer> randomNums = new HashSet<>();
+        // random으로 숫자 뽑기
+        Random rand = new Random();
+        rand.setSeed(System.currentTimeMillis());
+
+        // 숫자 3개 받을 때까지 반복
+        while (randomNums.size() != 3) {
+            randomNums.add(rand.nextInt(9) + 1);
+        }
+
+        // set에서 arraylist로 변경
+        answer = new ArrayList<>(randomNums);
+
+        // shuffle함수로 숫자 순서 바꾸기
+        Collections.shuffle(answer);
+        System.out.println(answer.toString());
     }
 }

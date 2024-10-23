@@ -16,7 +16,7 @@ public class BaseballGameDisplay {
     // strike, ball 개수 출력하는 메서드
     public void displayHint(int strike, int ball) {
         if (strike == 3) {
-            System.out.println("정답입니다!");
+            System.out.println("정답입니다!\n");
         } else if (strike == 0 && ball == 0) {
             System.out.println("아웃");
         } else {
