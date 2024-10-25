@@ -5,12 +5,13 @@ import java.util.*;
 public class BaseballGame {
     // playTime은 정답 맞출때까지 시도한 횟수, gameCount는 게임 시작을 한 횟수
     private ArrayList<Integer> answer;
-    int level = 3;
-    int strike = 0;
-    int ball = 0;
+    private int level = 3;
+    private int strike = 0;
+    private int ball = 0;
     private int playTime = 0;
     private int gameCount = 0;
     private Map<Integer, Integer> gameRecord = new HashMap<>();
+    Scanner sc = new Scanner(System.in);
 
     // 1) 정답 숫자 생성하기
     public BaseballGame() {
@@ -20,7 +21,6 @@ public class BaseballGame {
 
     // 출력 개선 (lv2)
     public void startGame() {
-        Scanner sc = new Scanner(System.in);
         boolean isContinue = true;
 
         // 종료하기를 선택하기 전까지 계속 반복
@@ -40,7 +40,7 @@ public class BaseballGame {
                     select = sc.nextInt();
                     isValidSelect = true;
 
-                // 문자가 입력됐을 때 예외처리
+                    // 문자가 입력됐을 때 예외처리
                 } catch (InputMismatchException e) {
                     System.out.println("올바른 숫자를 입력해주세요!\n");
                     sc.nextLine();
@@ -51,27 +51,10 @@ public class BaseballGame {
             switch (select) {
                 case 0:
                     // 게임 난이도 조절
-                    do {
-                        System.out.println("설정하고자 하는 자리수를 입력하세요.");
-                        try {
-                            level = sc.nextInt();
-                            // 3 ~ 5 이외의 값을 입력받았을 때
-                            if (level < 3 || level > 5) {
-                                System.out.println("3 ~ 5 사이의 수를 입력하세요.\n");
-                            }
-                        // 문자가 입력됐을 때
-                        } catch (InputMismatchException e) {
-                            System.out.println("3 ~ 5 사이의 수를 입력하세요.\n");
-                            level = 0;
-                            sc.nextLine();
-                        }
-                        // level이 3 ~ 5로 입력받을 때까지 반복
-                    } while (level < 3 || level > 5);
-                    System.out.println(level + "자리수 난이도로 설정되었습니다.\n");
+                    setLevel();
                     break;
                 case 1:
                     // 게임 시작하기
-                    BaseballGameDisplay.displayGameStart();
                     play();
                     break;
                 case 2:
@@ -99,12 +82,13 @@ public class BaseballGame {
     public int play() {
         // 플레이마다 정답이 랜덤으로 변경됨
         randomAnswer(level);
+        BaseballGameDisplay.displayGameStart();
+
         playTime = 0;
         gameCount++;
 
         // 4) 정답을 맞출 때까지 게임 이어서 하기
         while (true) {
-            Scanner sc = new Scanner(System.in);
 
             // 한번 입력받고 나면 strike와 ball 수 초기화
             strike = 0;
@@ -207,5 +191,26 @@ public class BaseballGame {
         // shuffle함수로 숫자 순서 바꾸기
         Collections.shuffle(answer);
         System.out.println(answer.toString());
+    }
+
+    // 자리수를 설정하는 메서드
+    public void setLevel() {
+        do {
+            System.out.println("설정하고자 하는 자리수를 입력하세요.");
+            try {
+                level = sc.nextInt();
+                // 3 ~ 5 이외의 값을 입력받았을 때
+                if (level < 3 || level > 5) {
+                    System.out.println("3 ~ 5 사이의 수를 입력하세요.\n");
+                }
+                // 문자가 입력됐을 때
+            } catch (InputMismatchException e) {
+                System.out.println("3 ~ 5 사이의 수를 입력하세요.\n");
+                level = 0;
+                sc.nextLine();
+            }
+            // level이 3 ~ 5로 입력받을 때까지 반복
+        } while (level < 3 || level > 5);
+        System.out.println(level + "자리수 난이도로 설정되었습니다.\n");
     }
 }
